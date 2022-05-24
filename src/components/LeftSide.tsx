@@ -19,7 +19,7 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import AddUser from "./AddUser";
 import { motion } from "framer-motion";
-import { PopupActions, PopupProps } from "reactjs-popup/dist/types";
+import { PopupActions } from "reactjs-popup/dist/types";
 function timeConverter(UNIX_timestamp: Timestamp): string {
   const a = new Date(UNIX_timestamp.seconds * 1000);
   return (
