@@ -214,7 +214,9 @@ export default function Signup() {
               {loading ? "Loading..." : "Create account"}
             </button>
             <button
+              onClick={() => navigate("/login")}
               disabled={loading}
+              type={"button"}
               className="bg-gray-600 flex items-center w-full justify-center space-x-3 hover:bg-gray-700  active:scale-95 transition font-semibold px-3 py-3 sm:w-1/2 text-sm text-white rounded-md"
             >
               <img src={google} className="w-5 h-5" />

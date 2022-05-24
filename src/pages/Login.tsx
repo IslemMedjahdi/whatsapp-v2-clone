@@ -3,9 +3,15 @@ import whatsapplogo from "../assets/whatsapplogo2.png";
 import google from "../assets/google.png";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../core/firebaseConfig";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../core/firebaseConfig";
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { LoginType } from "../core/types";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -22,6 +28,32 @@ export default function Login() {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .catch((e) => setError(e.code))
       .finally(() => setLoading(false));
+  };
+  const signInWithGoogleHandler = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider).then((result) => {
+      getDoc(doc(db, "users", result.user.uid))
+        .then((res) => {
+          if (!res.exists()) {
+            const userData = {
+              fName: result.user.displayName?.split(" ")[0],
+              lName: result.user.displayName?.split(" ")[1],
+              birthday: null,
+              email: result.user.email,
+              uid: result.user.uid,
+              picture: result.user.photoURL,
+              search: [
+                result.user.displayName?.split(" ")[0].toLowerCase(),
+                result.user.displayName?.split(" ")[1].toLowerCase(),
+                result.user.email?.toLowerCase(),
+                result.user.displayName,
+              ],
+            };
+            setDoc(doc(db, "users", result.user.uid), userData);
+          }
+        })
+        .catch((e) => console.log(e));
+    });
   };
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser) => {
@@ -74,9 +106,13 @@ export default function Login() {
           >
             {loading ? "Loading..." : "Login"}
           </button>
-          <button className="bg-gray-600 flex items-center justify-center space-x-3 hover:bg-gray-700  active:scale-95 transition font-semibold px-3 py-3 w-full sm:w-1/2 text-sm text-white rounded-md">
+          <button
+            onClick={signInWithGoogleHandler}
+            type={"button"}
+            className="bg-gray-600 flex items-center justify-center space-x-3 hover:bg-gray-700  active:scale-95 transition font-semibold px-3 py-3 w-full sm:w-1/2 text-sm text-white rounded-md"
+          >
             <img src={google} alt="google" className="w-5 h-5" />
-            <p>Login with google</p>
+            <p>Sign-In with google</p>
           </button>
         </div>
         {error && (
