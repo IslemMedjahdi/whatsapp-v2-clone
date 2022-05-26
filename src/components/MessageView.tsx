@@ -43,7 +43,7 @@ export default function MessageView({
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [idUser]);
   if (!user?.name.includes(searchValue)) {
     return <></>;
   }

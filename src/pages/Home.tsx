@@ -38,9 +38,9 @@ export default function Home() {
       }
     });
     return unsub;
-  }, []);
+  }, [navigate]);
   return (
-    <div className="grid overflow-hidden grid-cols-7 font-jakarta h-screen">
+    <div className="grid overflow-auto grid-cols-7 font-jakarta h-screen">
       {(openChat || windowWidth > 768) && (
         <LeftSide
           setOpen={setOpenChat}

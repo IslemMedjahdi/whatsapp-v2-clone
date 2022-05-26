@@ -1,5 +1,3 @@
-import applestore from "../assets/appstore.png";
-import googleplay from "../assets/googleplay.png";
 import google from "../assets/google.png";
 import whatsappscreen from "../assets/whatsappscreen.png";
 import whatsapplogo from "../assets/whatsapplogo2.png";
@@ -12,7 +10,14 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { BirthdayDate, SignUpType } from "../core/types";
 
 export default function Signup() {
@@ -80,6 +85,32 @@ export default function Signup() {
             ],
           };
           setDoc(doc(db, "users", user.user.uid), userData);
+          addDoc(collection(db, "chats"), {
+            createdAt: serverTimestamp(),
+            lastMessage: "",
+            updatedAt: serverTimestamp(),
+            userIds: [user.user.uid, "rmbJQucAbjQvll9pV341OB8hxnx2"],
+            id: "",
+          }).then((docRef) => {
+            updateDoc(doc(db, "chats", docRef.id), { id: docRef.id });
+            addDoc(collection(db, "messages"), {
+              chatId: docRef.id,
+              message:
+                "Hello i'm Islem medjahdi, I'm a computer science student in Algeria - Algiers, If you have any questions, let me know and don't forget to check my portfolio : https://islem-medjahdi-portfolio.vercel.app/",
+              sender: "rmbJQucAbjQvll9pV341OB8hxnx2",
+              type: "text",
+              createdAt: serverTimestamp(),
+            }).then((docRef) => {
+              updateDoc(doc(db, "messages", docRef.id), {
+                messageId: docRef.id,
+              });
+            });
+            updateDoc(doc(db, "chats", docRef.id), {
+              updatedAt: serverTimestamp(),
+              message:
+                "Hello i'm Islem medjahdi, I'm a computer science student in Algeria - Algiers, If you have any questions, let me know and don't forget to check my portfolio : https://islem-medjahdi-portfolio.vercel.app/",
+            });
+          });
         })
         .catch((e) => setError(e.code))
         .finally(() => setLoading(false));
@@ -92,7 +123,7 @@ export default function Signup() {
       }
     });
     return unsub;
-  }, []);
+  }, [navigate]);
   return (
     <div className="grid w-full text-gray-900 grid-cols-5 font-jakarta h-screen">
       <div className="bg-green hidden lg:flex overflow-hidden w-full col-span-2 flex-col items-center justify-center">
@@ -219,7 +250,7 @@ export default function Signup() {
               type={"button"}
               className="bg-gray-600 flex items-center w-full justify-center space-x-3 hover:bg-gray-700  active:scale-95 transition font-semibold px-3 py-3 sm:w-1/2 text-sm text-white rounded-md"
             >
-              <img src={google} className="w-5 h-5" />
+              <img src={google} alt="google" className="w-5 h-5" />
               <p>Sign-in with google</p>
             </button>
           </div>

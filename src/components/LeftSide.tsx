@@ -79,9 +79,9 @@ export default memo(function LeftSide({
       initial={{ x: "-100vh" }}
       animate={{ x: 0 }}
       transition={{ duration: 0.3, type: "spring", stiffness: 100 }}
-      className="shadow-lg  border-r-2 px-4 flex-col col-span-7  md:col-span-3 md:flex xl:col-span-2 h-screen"
+      className="shadow-lg overflow-auto scrollbar-none  border-r-2 px-4 flex-col col-span-7  md:col-span-3 md:flex xl:col-span-2 min-h-screen"
     >
-      <div className="sticky top-0">
+      <div className="sticky bg-white top-0">
         <div className="flex items-center justify-between pt-4 ">
           <div
             onClick={() => {

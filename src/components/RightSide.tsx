@@ -111,12 +111,12 @@ export default memo(function RightSide({ chatRoomId, userId, setOpen }: Props) {
         }
       });
     }
-  }, [chatRoomId]);
+  }, [chatRoomId, userId]);
   if (!chatRoomId) {
     return <Profile setOpen={setOpen} />;
   }
   return (
-    <div className="col-span-7 md:col-span-4 xl:col-span-5  bg-gray-100 flex-col h-screen flex justify-between">
+    <div className="col-span-7 overflow-auto md:col-span-4 xl:col-span-5  bg-gray-100 flex-col min-h-screen flex justify-between">
       <ChatHeader
         setOpen={setOpen}
         email={selectedFriend?.email || "_____________"}

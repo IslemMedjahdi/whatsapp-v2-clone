@@ -1,3 +1,4 @@
+import EmojiPicker from "emoji-picker-react";
 import {
   addDoc,
   collection,
@@ -11,7 +12,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import React, { useState } from "react";
+import { useState } from "react";
 import emptyProfile from "../assets/empty-profile.png";
 import { db } from "../core/firebaseConfig";
 
@@ -127,6 +128,7 @@ export default function AddUser({ userId, closePopup }: Props) {
             <div>
               <img
                 src={user.picture || emptyProfile}
+                alt="userpic"
                 className="h-10 w-10 rounded-full object-cover"
               />
             </div>
