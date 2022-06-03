@@ -34,6 +34,7 @@ export default function Profile({ setOpen }: Props) {
         </div>
         <p className="text-white font-semibold">WhatsApp</p>
       </div>
+      <div></div>
     </div>
   );
 }

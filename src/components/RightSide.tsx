@@ -116,7 +116,13 @@ export default memo(function RightSide({ chatRoomId, userId, setOpen }: Props) {
     return <Profile setOpen={setOpen} />;
   }
   return (
-    <div className="col-span-7 overflow-auto md:col-span-4 xl:col-span-5  bg-gray-100 flex-col min-h-screen flex justify-between">
+    <div
+      className="col-span-7 bg-cover !bg-opacity-5 overflow-auto md:col-span-4 xl:col-span-5 bg-gray-100 flex-col min-h-screen flex justify-between"
+      style={{
+        backgroundImage:
+          "url(https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png)",
+      }}
+    >
       <ChatHeader
         setOpen={setOpen}
         email={selectedFriend?.email || "_____________"}
