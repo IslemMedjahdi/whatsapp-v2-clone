@@ -26,6 +26,9 @@ type Props = {
   chatRoomId: string;
   userId?: string;
   setOpen: (b: boolean) => void;
+  lName: string;
+  fName: string;
+  picture?: string;
 };
 
 type TypeSelectedFriend = {
@@ -35,7 +38,14 @@ type TypeSelectedFriend = {
   email: string;
 };
 
-export default memo(function RightSide({ chatRoomId, userId, setOpen }: Props) {
+export default memo(function RightSide({
+  chatRoomId,
+  userId,
+  setOpen,
+  picture,
+  fName,
+  lName,
+}: Props) {
   const [selectedMessage, setSelectedMessage] = useState("");
   const [messages, setMessages] = useState<MessageType[]>();
   const [loading, setLoading] = useState(false);
@@ -131,7 +141,7 @@ export default memo(function RightSide({ chatRoomId, userId, setOpen }: Props) {
         picture={selectedFriend?.picture || emptyProfile}
       />
       <div className="flex flex-col overflow-auto scrollbar-none px-5 py-4 ">
-        {messages?.map((message) => (
+        {messages?.map((message, index) => (
           <Message
             key={message.messageId || -1}
             text={message.message}
@@ -140,6 +150,26 @@ export default memo(function RightSide({ chatRoomId, userId, setOpen }: Props) {
             selectedMessage={selectedMessage}
             messageId={message.messageId || "-1"}
             setSelectedMessage={() => setSelectedMessage(message.messageId)}
+            isFirstMessage={
+              index !== 0 && index + 1 !== messages.length
+                ? message.sender !== messages[index - 1].sender &&
+                  message.sender === messages[index + 1].sender
+                : index === 0
+                ? true
+                : index + 1 === messages.length
+                ? message.sender !== messages[index - 1].sender
+                : false
+            }
+            isLastMessage={
+              index !== 0 && index + 1 !== messages.length
+                ? message.sender !== messages[index + 1].sender &&
+                  message.sender === messages[index - 1].sender
+                : index + 1 === messages.length
+                ? true
+                : index === 0
+                ? message.sender !== messages[index + 1].sender
+                : false
+            }
           />
         ))}
         <div className="py-4" ref={dummyRef} />

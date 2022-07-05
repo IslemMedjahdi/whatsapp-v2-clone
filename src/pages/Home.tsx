@@ -56,6 +56,9 @@ export default function Home() {
           setOpen={setOpenChat}
           userId={user?.uid}
           chatRoomId={selectedChatRoom}
+          picture={user?.picture}
+          fName={user?.fName || "____"}
+          lName={user?.lName || "____"}
         />
       )}
     </div>
